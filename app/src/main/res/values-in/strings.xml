@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BusLog</string>
+    <string name="add_ticket">Tambah Tiket</string>
+    <string name="edit_ticket">Edit Tiket</string>
+    <string name="save">Simpan</string>
+    <string name="delete">Hapus</string>
+    <string name="cancel">Batal</string>
+    <string name="delete_title">Hapus Tiket</string>
+    <string name="delete_message">Apakah Anda yakin ingin menghapus tiket ini?</string>
+    <string name="no_data">Belum ada riwayat tiket.</string>
+    <string name="po_bus_label">Nama PO Bus</string>
+    <string name="origin_label">Asal</string>
+    <string name="destination_label">Tujuan</string>
+    <string name="date_label">Tanggal Keberangkatan</string>
+    <string name="price_label">Harga Tiket</string>
+    <string name="seat_label">Nomor Kursi</string>
+    <string name="settings">Pengaturan</string>
+    <string name="grid_layout">Tampilan Grid</string>
+    <string name="grid_desc">Tampilkan perjalanan dalam dua kolom</string>
+    <string name="dark_mode">Mode Gelap</string>
+    <string name="dark_desc">Aktifkan tema gelap untuk aplikasi</string>
+    <string name="menu_home">Beranda</string>
+    <string name="menu_profile">Profil</string>
+    <string name="menu_settings">Pengaturan</string>
+    <string name="select_date">Pilih Tanggal</string>
+    <string name="profile_name">Muhammad Nabiluddin</string>
+    <string name="profile_email">nabil@gmail.com</string>
+    <string name="profile_major">D3 Rekayasa Perangkat Lunak Aplikasi</string>
+    <string name="profile_university">Universitas Telkom</string>
+</resources>

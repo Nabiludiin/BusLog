@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.d3if4802.buslog.R
@@ -62,7 +63,7 @@ fun TiketItem(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = tiket.poBus, fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color.White)
+                Text(text = tiket.poBus, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Color.White)
                 IconButton(onClick = { showDialog = true }) {
                     Icon(imageVector = Icons.Default.Delete, contentDescription = null, tint = Color.White)
                 }
@@ -96,5 +97,27 @@ fun TiketItem(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TiketItemPreview() {
+    val dummyTiket = TiketBus(
+        id = 1,
+        poBus = "Sinar Jaya",
+        asal = "Bandung",
+        tujuan = "Muara Enim",
+        tanggal = "11/05/2026",
+        harga = 350000,
+        nomorKursi = "12A"
+    )
+
+    com.d3if4802.buslog.ui.theme.BusLogTheme {
+        TiketItem(
+            tiket = dummyTiket,
+            onClick = {},
+            onDelete = {}
+        )
     }
 }
