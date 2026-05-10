@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -44,7 +43,9 @@ fun HomeScreen(navController: NavHostController) {
                 TopAppBar(
                     title = { Text("BusLog") },
                     actions = {
-                        IconButton(onClick = {  }) {
+                        IconButton(onClick = {
+                            navController.navigate(Screen.Settings.route)
+                        }) {
                             Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "Profile")
                         }
                     }
@@ -77,7 +78,9 @@ fun HomeScreen(navController: NavHostController) {
                         items(tiketList) { tiket ->
                             TiketItem(
                                 tiket = tiket,
-                                onClick = {  },
+                                onClick = {
+                                    navController.navigate(Screen.Form.withId(tiket.id))
+                                },
                                 onDelete = { viewModel.deleteTiket(tiket) }
                             )
                         }
@@ -90,7 +93,9 @@ fun HomeScreen(navController: NavHostController) {
                         items(tiketList) { tiket ->
                             TiketItem(
                                 tiket = tiket,
-                                onClick = {  },
+                                onClick = {
+                                    navController.navigate(Screen.Form.withId(tiket.id))
+                                },
                                 onDelete = { viewModel.deleteTiket(tiket) }
                             )
                         }
@@ -100,6 +105,7 @@ fun HomeScreen(navController: NavHostController) {
         }
     }
 }
+
 @androidx.compose.ui.tooling.preview.Preview(showBackground = true)
 @Composable
 fun HomePreview() {

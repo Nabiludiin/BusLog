@@ -22,12 +22,15 @@ import com.d3if4802.buslog.util.ViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FormScreen(navController: NavHostController) {
+fun FormScreen(navController: NavHostController, tiketId: Int? = null) {
     val context = LocalContext.current
     val db = TiketDb.getInstance(context)
     val dataStore = SettingsDataStore(context)
     val factory = ViewModelFactory(db.dao, dataStore)
     val viewModel: MainViewModel = viewModel(factory = factory)
+
+    val listData by viewModel.tiketData.collectAsState()
+    val tiketLama = listData.find { it.id == tiketId }
 
     var poBus by remember { mutableStateOf("") }
     var asal by remember { mutableStateOf("") }
@@ -36,11 +39,22 @@ fun FormScreen(navController: NavHostController) {
     var harga by remember { mutableStateOf("") }
     var nomorKursi by remember { mutableStateOf("") }
 
+    LaunchedEffect(tiketLama) {
+        if (tiketLama != null) {
+            poBus = tiketLama.poBus
+            asal = tiketLama.asal
+            tujuan = tiketLama.tujuan
+            tanggal = tiketLama.tanggal
+            harga = tiketLama.harga.toString()
+            nomorKursi = tiketLama.nomorKursi
+        }
+    }
+
     Scaffold(
         topBar = {
             Column {
                 TopAppBar(
-                    title = { Text("Add Ticket") },
+                    title = { Text(if (tiketId == null) "Add Ticket" else "Edit Ticket") },
                     navigationIcon = {
                         IconButton(onClick = { navController.popBackStack() }) {
                             Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -48,8 +62,9 @@ fun FormScreen(navController: NavHostController) {
                     },
                     actions = {
                         IconButton(onClick = {
-                            if (poBus.isNotEmpty() && asal.isNotEmpty() && tujuan.isNotEmpty()) {
+                            if (poBus.isNotEmpty() && asal.isNotEmpty()) {
                                 val tiket = TiketBus(
+                                    id = tiketId ?: 0,
                                     poBus = poBus,
                                     asal = asal,
                                     tujuan = tujuan,
@@ -57,7 +72,8 @@ fun FormScreen(navController: NavHostController) {
                                     harga = harga.toIntOrNull() ?: 0,
                                     nomorKursi = nomorKursi
                                 )
-                                viewModel.insertTiket(tiket)
+                                if (tiketId == null) viewModel.insertTiket(tiket)
+                                else viewModel.updateTiket(tiket)
                                 navController.popBackStack()
                             }
                         }) {
@@ -92,9 +108,7 @@ fun FormContent(
     nomorKursi: String, onKursiChange: (String) -> Unit
 ) {
     Column(
-        modifier = modifier
-            .padding(16.dp)
-            .fillMaxSize(),
+        modifier = modifier.padding(16.dp).fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         OutlinedTextField(
@@ -127,10 +141,7 @@ fun FormContent(
             value = harga,
             onValueChange = onHargaChange,
             label = { Text("Harga Tiket") },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Next
-            ),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
@@ -151,9 +162,9 @@ fun FormPreview() {
                 modifier = Modifier.padding(it),
                 poBus = "Sinar Jaya", onPoChange = {},
                 asal = "Bandung", onAsalChange = {},
-                tujuan = "Jakarta", onTujuanChange = {},
-                tanggal = "10/10/2026", onTanggalChange = {},
-                harga = "150000", onHargaChange = {},
+                tujuan = "Palembang", onTujuanChange = {},
+                tanggal = "10/05/2026", onTanggalChange = {},
+                harga = "350000", onHargaChange = {},
                 nomorKursi = "12A", onKursiChange = {}
             )
         }
