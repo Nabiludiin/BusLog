@@ -166,3 +166,17 @@ fun FormContent(
         )
     }
 }
+@androidx.compose.ui.tooling.preview.Preview(showBackground = true)
+@Composable
+fun FormPreview() {
+    com.d3if4802.buslog.ui.theme.BusLogTheme {
+        FormContent(
+            poBus = "Sinar Jaya", onPoChange = {},
+            asal = "Bandung", onAsalChange = {},
+            tujuan = "Muara Enim", onTujuanChange = {},
+            tanggal = "11/05/2026", onTanggalChange = {},
+            harga = "350000", onHargaChange = {},
+            nomorKursi = "12A", onKursiChange = {}
+        )
+    }
+}

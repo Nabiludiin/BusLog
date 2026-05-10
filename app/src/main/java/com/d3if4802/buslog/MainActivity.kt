@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.d3if4802.buslog.database.TiketDb
-import com.d3if4802.buslog.navigation.SetupNavGraph
+import com.d3if4802.buslog.ui.screen.MainScreen
 import com.d3if4802.buslog.ui.screen.MainViewModel
 import com.d3if4802.buslog.ui.theme.BusLogTheme
 import com.d3if4802.buslog.util.SettingsDataStore
@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    SetupNavGraph(navController = navController)
+                    MainScreen(navController = navController)
                 }
             }
         }

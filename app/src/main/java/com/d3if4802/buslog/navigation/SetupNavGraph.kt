@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.d3if4802.buslog.ui.screen.FormScreen
 import com.d3if4802.buslog.ui.screen.HomeScreen
+import com.d3if4802.buslog.ui.screen.ProfileScreen
 import com.d3if4802.buslog.ui.screen.SettingsScreen
 
 @Composable
@@ -20,7 +21,7 @@ fun SetupNavGraph(navController: NavHostController) {
             HomeScreen(navController)
         }
         composable(route = Screen.Settings.route) {
-            SettingsScreen(navController)
+            SettingsScreen()
         }
         composable(route = Screen.Form.route) {
             FormScreen(navController)
@@ -31,6 +32,9 @@ fun SetupNavGraph(navController: NavHostController) {
         ) { navBackStackEntry ->
             val id = navBackStackEntry.arguments?.getInt("tiketId")
             FormScreen(navController, tiketId = id)
+        }
+        composable(route = Screen.Profile.route) {
+            ProfileScreen()
         }
     }
 }

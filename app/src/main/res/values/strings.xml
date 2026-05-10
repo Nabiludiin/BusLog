@@ -21,4 +21,12 @@
     <string name="grid_desc">Display journeys in two columns</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="dark_desc">Enable dark theme for the app</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_profile">Profile</string>
+    <string name="menu_settings">Settings</string>
+    <string name="profile_name">Muhammad Nabiluddin</string>
+    <string name="profile_email">nabil@student.telkomuniversity.ac.id</string>
+    <string name="profile_major">D3 Rekayasa Perangkat Lunak Aplikasi</string>
+    <string name="profile_university">Telkom University</string>
 </resources>
