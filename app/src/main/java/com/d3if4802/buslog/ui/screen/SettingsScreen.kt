@@ -11,9 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.d3if4802.buslog.R
 import com.d3if4802.buslog.database.TiketDb
 import com.d3if4802.buslog.util.SettingsDataStore
 import com.d3if4802.buslog.util.ViewModelFactory
@@ -34,10 +36,10 @@ fun SettingsScreen(navController: NavHostController) {
         topBar = {
             Column {
                 TopAppBar(
-                    title = { Text("Settings") },
+                    title = { Text(stringResource(R.string.settings)) },
                     navigationIcon = {
                         IconButton(onClick = { navController.popBackStack() }) {
-                            Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
                         }
                     }
                 )
@@ -45,53 +47,22 @@ fun SettingsScreen(navController: NavHostController) {
             }
         }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .padding(16.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+        Column(modifier = Modifier.padding(paddingValues).padding(16.dp).fillMaxSize(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                 Column {
-                    Text(text = "Grid Layout", style = MaterialTheme.typography.bodyLarge)
-                    Text(text = "Display journeys in two columns", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+                    Text(text = stringResource(R.string.grid_layout), style = MaterialTheme.typography.bodyLarge)
+                    Text(text = stringResource(R.string.grid_desc), style = MaterialTheme.typography.bodySmall, color = Color.Gray)
                 }
-                Switch(
-                    checked = isGridView,
-                    onCheckedChange = { viewModel.saveLayoutPreference(it) }
-                )
+                Switch(checked = isGridView, onCheckedChange = { viewModel.saveLayoutPreference(it) })
             }
-
             HorizontalDivider(thickness = 0.5.dp)
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                 Column {
-                    Text(text = "Dark Mode", style = MaterialTheme.typography.bodyLarge)
-                    Text(text = "Enable dark theme for the app", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+                    Text(text = stringResource(R.string.dark_mode), style = MaterialTheme.typography.bodyLarge)
+                    Text(text = stringResource(R.string.dark_desc), style = MaterialTheme.typography.bodySmall, color = Color.Gray)
                 }
-                Switch(
-                    checked = isDarkMode,
-                    onCheckedChange = { viewModel.saveThemePreference(it) }
-                )
+                Switch(checked = isDarkMode, onCheckedChange = { viewModel.saveThemePreference(it) })
             }
         }
-    }
-}
-
-@androidx.compose.ui.tooling.preview.Preview(showBackground = true)
-@Composable
-fun SettingsPreview() {
-    val navController = androidx.navigation.compose.rememberNavController()
-    com.d3if4802.buslog.ui.theme.BusLogTheme {
-        SettingsScreen(navController)
     }
 }

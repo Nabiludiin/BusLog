@@ -11,11 +11,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.d3if4802.buslog.R
 import com.d3if4802.buslog.database.TiketDb
 import com.d3if4802.buslog.model.TiketBus
 import com.d3if4802.buslog.util.SettingsDataStore
@@ -55,19 +57,15 @@ fun FormScreen(navController: NavHostController, tiketId: Int? = null) {
         topBar = {
             Column {
                 TopAppBar(
-                    title = { Text(if (tiketId == null) "Add Ticket" else "Edit Ticket") },
+                    title = { Text(stringResource(if (tiketId == null) R.string.add_ticket else R.string.edit_ticket)) },
                     navigationIcon = {
                         IconButton(onClick = { navController.popBackStack() }) {
-                            Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
                         }
                     },
                     actions = {
                         IconButton(onClick = {
-                            if (poBus.isEmpty() || asal.isEmpty() || tujuan.isEmpty() || harga.isEmpty()) {
-                                Toast.makeText(context, "Please fill all required fields", Toast.LENGTH_SHORT).show()
-                                return@IconButton
-                            }
-
+                            if (poBus.isEmpty() || asal.isEmpty()) return@IconButton
                             val tiket = TiketBus(
                                 id = tiketId ?: 0,
                                 poBus = poBus,
@@ -77,17 +75,11 @@ fun FormScreen(navController: NavHostController, tiketId: Int? = null) {
                                 harga = harga.toIntOrNull() ?: 0,
                                 nomorKursi = nomorKursi
                             )
-
-                            if (tiketId == null) {
-                                viewModel.insertTiket(tiket)
-                                Toast.makeText(context, "Ticket added", Toast.LENGTH_SHORT).show()
-                            } else {
-                                viewModel.updateTiket(tiket)
-                                Toast.makeText(context, "Ticket updated", Toast.LENGTH_SHORT).show()
-                            }
+                            if (tiketId == null) viewModel.insertTiket(tiket)
+                            else viewModel.updateTiket(tiket)
                             navController.popBackStack()
                         }) {
-                            Icon(imageVector = Icons.Default.Check, contentDescription = "Save")
+                            Icon(imageVector = Icons.Default.Check, contentDescription = null)
                         }
                     }
                 )
@@ -124,65 +116,53 @@ fun FormContent(
         OutlinedTextField(
             value = poBus,
             onValueChange = onPoChange,
-            label = { Text("Nama PO Bus") },
+            label = {
+                Text(stringResource(R.string.po_bus_label)) }
+            , modifier = Modifier.fillMaxWidth())
+        Row(
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
-        )
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = asal,
                 onValueChange = onAsalChange,
-                label = { Text("Asal") },
-                modifier = Modifier.weight(1f),
-                singleLine = true
+                label = {
+                    Text(stringResource(R.string.origin_label))
+                        },
+                modifier = Modifier.weight(1f)
             )
             OutlinedTextField(
                 value = tujuan,
                 onValueChange = onTujuanChange,
-                label = { Text("Tujuan") },
-                modifier = Modifier.weight(1f),
-                singleLine = true
+                label = {
+                    Text(stringResource(R.string.destination_label))
+                        },
+                modifier = Modifier.weight(1f)
             )
         }
         OutlinedTextField(
             value = tanggal,
             onValueChange = onTanggalChange,
-            label = { Text("Tanggal Keberangkatan") },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            label = {
+                Text(stringResource(R.string.date_label))
+                    },
+            modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
             value = harga,
             onValueChange = onHargaChange,
-            label = { Text("Harga Tiket") },
+            label = {
+                Text(stringResource(R.string.price_label))
+                    },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
             value = nomorKursi,
             onValueChange = onKursiChange,
-            label = { Text("Nomor Kursi") },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            label = {
+                Text(stringResource(R.string.seat_label))
+                    },
+            modifier = Modifier.fillMaxWidth()
         )
-    }
-}
-
-@androidx.compose.ui.tooling.preview.Preview(showBackground = true)
-@Composable
-fun FormPreview() {
-    com.d3if4802.buslog.ui.theme.BusLogTheme {
-        Scaffold {
-            FormContent(
-                modifier = Modifier.padding(it),
-                poBus = "Sinar Jaya", onPoChange = {},
-                asal = "Bandung", onAsalChange = {},
-                tujuan = "Muara Enim", onTujuanChange = {},
-                tanggal = "10/05/2026", onTanggalChange = {},
-                harga = "350000", onHargaChange = {},
-                nomorKursi = "12A", onKursiChange = {}
-            )
-        }
     }
 }

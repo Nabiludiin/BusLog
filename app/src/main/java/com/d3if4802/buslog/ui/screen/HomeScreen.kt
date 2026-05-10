@@ -7,8 +7,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,9 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.d3if4802.buslog.R
 import com.d3if4802.buslog.database.TiketDb
 import com.d3if4802.buslog.navigation.Screen
 import com.d3if4802.buslog.util.SettingsDataStore
@@ -41,12 +43,15 @@ fun HomeScreen(navController: NavHostController) {
         topBar = {
             Column {
                 TopAppBar(
-                    title = { Text("BusLog") },
+                    title = { Text(stringResource(R.string.app_name)) },
                     actions = {
                         IconButton(onClick = {
                             navController.navigate(Screen.Settings.route)
                         }) {
-                            Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "Profile")
+                            Icon(
+                                imageVector = Icons.Default.Settings,
+                                contentDescription = null
+                            )
                         }
                     }
                 )
@@ -55,7 +60,7 @@ fun HomeScreen(navController: NavHostController) {
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { navController.navigate(Screen.Form.route) }) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Ticket")
+                Icon(imageVector = Icons.Default.Add, contentDescription = null)
             }
         }
     ) { paddingValues ->
@@ -66,7 +71,7 @@ fun HomeScreen(navController: NavHostController) {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = "Belum ada riwayat tiket.")
+                    Text(text = stringResource(R.string.no_data))
                 }
             } else {
                 if (isGridView) {
