@@ -1,4 +1,4 @@
-package com.d3if4802.buslog.data
+package com.d3if4802.buslog.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
