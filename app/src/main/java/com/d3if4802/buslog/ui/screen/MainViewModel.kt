@@ -33,6 +33,18 @@ class MainViewModel(
         initialValue = false
     )
 
+    fun insertTiket(tiket: TiketBus) {
+        viewModelScope.launch {
+            dao.insertTiket(tiket)
+        }
+    }
+
+    fun deleteTiket(tiket: TiketBus) {
+        viewModelScope.launch {
+            dao.deleteTiket(tiket)
+        }
+    }
+
     fun saveLayoutPreference(isGrid: Boolean) {
         viewModelScope.launch {
             dataStore.saveLayoutPreference(isGrid)

@@ -62,3 +62,11 @@ fun SettingsScreen(navController: NavHostController) {
         }
     }
 }
+@androidx.compose.ui.tooling.preview.Preview(showBackground = true)
+@Composable
+fun SettingsPreview() {
+    val navController = androidx.navigation.compose.rememberNavController()
+    com.d3if4802.buslog.ui.theme.BusLogTheme {
+        SettingsScreen(navController)
+    }
+}

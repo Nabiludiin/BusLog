@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.d3if4802.buslog.ui.screen.FormScreen
 import com.d3if4802.buslog.ui.screen.HomeScreen
 import com.d3if4802.buslog.ui.screen.SettingsScreen
 
@@ -18,6 +19,9 @@ fun SetupNavGraph(navController: NavHostController) {
         }
         composable(route = Screen.Settings.route) {
             SettingsScreen(navController)
+        }
+        composable(route = Screen.Form.route) {
+            FormScreen(navController)
         }
     }
 }

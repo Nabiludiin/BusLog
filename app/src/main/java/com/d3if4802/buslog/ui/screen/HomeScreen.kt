@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
@@ -15,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -38,14 +40,17 @@ fun HomeScreen(navController: NavHostController) {
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("My Journeys") },
-                actions = {
-                    IconButton(onClick = { navController.navigate(Screen.Settings.route) }) {
-                        Icon(imageVector = Icons.Default.Settings, contentDescription = "Settings")
+            Column {
+                TopAppBar(
+                    title = { Text("BusLog") },
+                    actions = {
+                        IconButton(onClick = {  }) {
+                            Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "Profile")
+                        }
                     }
-                }
-            )
+                )
+                HorizontalDivider(thickness = 0.5.dp, color = Color.LightGray)
+            }
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { navController.navigate(Screen.Form.route) }) {
@@ -60,7 +65,7 @@ fun HomeScreen(navController: NavHostController) {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = "No tickets yet. Tap + to add.")
+                    Text(text = "Belum ada riwayat tiket.")
                 }
             } else {
                 if (isGridView) {
@@ -70,7 +75,11 @@ fun HomeScreen(navController: NavHostController) {
                         modifier = Modifier.fillMaxSize()
                     ) {
                         items(tiketList) { tiket ->
-                            TiketItem(tiket = tiket, onClick = {  })
+                            TiketItem(
+                                tiket = tiket,
+                                onClick = {  },
+                                onDelete = { viewModel.deleteTiket(tiket) }
+                            )
                         }
                     }
                 } else {
@@ -79,11 +88,23 @@ fun HomeScreen(navController: NavHostController) {
                         contentPadding = PaddingValues(8.dp)
                     ) {
                         items(tiketList) { tiket ->
-                            TiketItem(tiket = tiket, onClick = {  })
+                            TiketItem(
+                                tiket = tiket,
+                                onClick = {  },
+                                onDelete = { viewModel.deleteTiket(tiket) }
+                            )
                         }
                     }
                 }
             }
         }
+    }
+}
+@androidx.compose.ui.tooling.preview.Preview(showBackground = true)
+@Composable
+fun HomePreview() {
+    val navController = androidx.navigation.compose.rememberNavController()
+    com.d3if4802.buslog.ui.theme.BusLogTheme {
+        HomeScreen(navController)
     }
 }
