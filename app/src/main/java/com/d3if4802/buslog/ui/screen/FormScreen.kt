@@ -1,5 +1,6 @@
 package com.d3if4802.buslog.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -62,20 +63,29 @@ fun FormScreen(navController: NavHostController, tiketId: Int? = null) {
                     },
                     actions = {
                         IconButton(onClick = {
-                            if (poBus.isNotEmpty() && asal.isNotEmpty()) {
-                                val tiket = TiketBus(
-                                    id = tiketId ?: 0,
-                                    poBus = poBus,
-                                    asal = asal,
-                                    tujuan = tujuan,
-                                    tanggal = tanggal,
-                                    harga = harga.toIntOrNull() ?: 0,
-                                    nomorKursi = nomorKursi
-                                )
-                                if (tiketId == null) viewModel.insertTiket(tiket)
-                                else viewModel.updateTiket(tiket)
-                                navController.popBackStack()
+                            if (poBus.isEmpty() || asal.isEmpty() || tujuan.isEmpty() || harga.isEmpty()) {
+                                Toast.makeText(context, "Please fill all required fields", Toast.LENGTH_SHORT).show()
+                                return@IconButton
                             }
+
+                            val tiket = TiketBus(
+                                id = tiketId ?: 0,
+                                poBus = poBus,
+                                asal = asal,
+                                tujuan = tujuan,
+                                tanggal = tanggal,
+                                harga = harga.toIntOrNull() ?: 0,
+                                nomorKursi = nomorKursi
+                            )
+
+                            if (tiketId == null) {
+                                viewModel.insertTiket(tiket)
+                                Toast.makeText(context, "Ticket added", Toast.LENGTH_SHORT).show()
+                            } else {
+                                viewModel.updateTiket(tiket)
+                                Toast.makeText(context, "Ticket updated", Toast.LENGTH_SHORT).show()
+                            }
+                            navController.popBackStack()
                         }) {
                             Icon(imageVector = Icons.Default.Check, contentDescription = "Save")
                         }
@@ -115,40 +125,46 @@ fun FormContent(
             value = poBus,
             onValueChange = onPoChange,
             label = { Text("Nama PO Bus") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
         )
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
                 value = asal,
                 onValueChange = onAsalChange,
                 label = { Text("Asal") },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                singleLine = true
             )
             OutlinedTextField(
                 value = tujuan,
                 onValueChange = onTujuanChange,
                 label = { Text("Tujuan") },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                singleLine = true
             )
         }
         OutlinedTextField(
             value = tanggal,
             onValueChange = onTanggalChange,
             label = { Text("Tanggal Keberangkatan") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
         )
         OutlinedTextField(
             value = harga,
             onValueChange = onHargaChange,
             label = { Text("Harga Tiket") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
         )
         OutlinedTextField(
             value = nomorKursi,
             onValueChange = onKursiChange,
             label = { Text("Nomor Kursi") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
         )
     }
 }
@@ -162,7 +178,7 @@ fun FormPreview() {
                 modifier = Modifier.padding(it),
                 poBus = "Sinar Jaya", onPoChange = {},
                 asal = "Bandung", onAsalChange = {},
-                tujuan = "Palembang", onTujuanChange = {},
+                tujuan = "Muara Enim", onTujuanChange = {},
                 tanggal = "10/05/2026", onTanggalChange = {},
                 harga = "350000", onHargaChange = {},
                 nomorKursi = "12A", onKursiChange = {}

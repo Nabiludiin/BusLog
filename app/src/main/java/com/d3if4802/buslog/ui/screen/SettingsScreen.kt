@@ -4,9 +4,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -29,39 +32,61 @@ fun SettingsScreen(navController: NavHostController) {
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Settings") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+            Column {
+                TopAppBar(
+                    title = { Text("Settings") },
+                    navigationIcon = {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
                     }
-                }
-            )
+                )
+                HorizontalDivider(thickness = 0.5.dp, color = Color.LightGray)
+            }
         }
     ) { paddingValues ->
         Column(
-            modifier = Modifier.padding(paddingValues).padding(16.dp).fillMaxSize()
+            modifier = Modifier
+                .padding(paddingValues)
+                .padding(16.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Grid Layout")
-                Switch(checked = isGridView, onCheckedChange = { viewModel.saveLayoutPreference(it) })
+                Column {
+                    Text(text = "Grid Layout", style = MaterialTheme.typography.bodyLarge)
+                    Text(text = "Display journeys in two columns", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+                }
+                Switch(
+                    checked = isGridView,
+                    onCheckedChange = { viewModel.saveLayoutPreference(it) }
+                )
             }
-            Divider(modifier = Modifier.padding(vertical = 8.dp))
+
+            HorizontalDivider(thickness = 0.5.dp)
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Dark Mode")
-                Switch(checked = isDarkMode, onCheckedChange = { viewModel.saveThemePreference(it) })
+                Column {
+                    Text(text = "Dark Mode", style = MaterialTheme.typography.bodyLarge)
+                    Text(text = "Enable dark theme for the app", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+                }
+                Switch(
+                    checked = isDarkMode,
+                    onCheckedChange = { viewModel.saveThemePreference(it) }
+                )
             }
         }
     }
 }
+
 @androidx.compose.ui.tooling.preview.Preview(showBackground = true)
 @Composable
 fun SettingsPreview() {
