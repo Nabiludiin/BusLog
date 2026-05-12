@@ -3,6 +3,7 @@ package com.d3if4802.buslog.ui.screen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.d3if4802.buslog.database.TiketDao
+import com.d3if4802.buslog.model.ProfileEntity
 import com.d3if4802.buslog.model.TiketBus
 import com.d3if4802.buslog.util.SettingsDataStore
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,6 +22,12 @@ class MainViewModel(
         initialValue = emptyList()
     )
 
+    val profileData: StateFlow<ProfileEntity?> = dao.getProfile().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = null
+    )
+
     val isGridView: StateFlow<Boolean> = dataStore.layoutFlow.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000L),
@@ -36,20 +43,22 @@ class MainViewModel(
     fun insertTiket(tiket: TiketBus) = viewModelScope.launch {
         dao.insertTiket(tiket)
     }
-
     fun updateTiket(tiket: TiketBus) = viewModelScope.launch {
         dao.updateTiket(tiket)
     }
-
     fun deleteTiket(tiket: TiketBus) = viewModelScope.launch {
         dao.deleteTiket(tiket)
     }
 
-    fun saveLayoutPreference(isGrid: Boolean) = viewModelScope.launch {
-        dataStore.saveLayoutPreference(isGrid)
+    fun upsertProfile(nama: String, email: String, nim: String) = viewModelScope.launch {
+        val current = profileData.value
+        if (current == null) {
+            dao.insertProfile(ProfileEntity(id = 1, nama = nama, email = email, nim = nim))
+        } else {
+            dao.updateProfile(ProfileEntity(id = 1, nama = nama, email = email, nim = nim))
+        }
     }
 
-    fun saveThemePreference(isDark: Boolean) = viewModelScope.launch {
-        dataStore.saveThemePreference(isDark)
-    }
+    fun saveLayoutPreference(isGrid: Boolean) = viewModelScope.launch { dataStore.saveLayoutPreference(isGrid) }
+    fun saveThemePreference(isDark: Boolean) = viewModelScope.launch { dataStore.saveThemePreference(isDark) }
 }

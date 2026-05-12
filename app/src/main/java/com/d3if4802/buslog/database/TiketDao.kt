@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.d3if4802.buslog.model.ProfileEntity
 import com.d3if4802.buslog.model.TiketBus
 import kotlinx.coroutines.flow.Flow
 
@@ -25,4 +26,13 @@ interface TiketDao {
 
     @Delete
     suspend fun deleteTiket(tiket: TiketBus)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertProfile(profile: ProfileEntity)
+
+    @Update
+    suspend fun updateProfile(profile: ProfileEntity)
+
+    @Query("SELECT * FROM profile WHERE id = 1")
+    fun getProfile(): Flow<ProfileEntity?>
 }
